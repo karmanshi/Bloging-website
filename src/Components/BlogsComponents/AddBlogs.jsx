@@ -12,30 +12,36 @@ const AddBlogs = () => {
     setAddBlog({ ...addBlog, [e.target.name]: e.target.value })
   }
   const checkValidation = (value, field) => {
-    if (value == '') {
+    if (!value || value.trim() === '') {
       toast.error(`${field} is required`)
       return false
     }
     return true
   }
 
+
   const handleSubmit = (e) => {
     e.preventDefault()
     let resp1 = checkValidation(addBlog.heading, "Blog Heading")
-    let resp2 = checkValidation(addBlog.img, "Image")
-    let resp3 = checkValidation(addBlog.content, "Blog Content")
+    let resp2 = checkValidation(addBlog.content, "Blog Content")
     let dateTime = new Date();
     dateTime = dateTime.toDateString()
-    if (resp1 && resp2 && resp3  == true) {
+    console.log(resp1 && resp2)
+    if (resp1 && resp2 ) {
       let data = { content: addBlog.content, heading: addBlog.heading, time: dateTime, img: addBlog.img }
       localStorage.setItem('Blogs', JSON.stringify([...showBlog, data]))
       toast.success('Blog Added sucessfully')
       navigate('/home/blogdetails')
-      setShowBlog('')
+      setAddBlog({ heading: '', content: '', img: '' }) // Reset the form after submission
+      setShowBlog([...showBlog, data])
+     
     }
-
-
   }
+
+  const handleCancel = () =>{
+    navigate()
+  }
+
   useEffect(() => {
     const blog = localStorage.getItem('Blogs');
     if (blog) {
@@ -124,7 +130,7 @@ const AddBlogs = () => {
 
 
               </div>
-              <div className="flex justify-start">
+              <div className="flex justify-start gap-2 flex-wrap">
                 <button
                   onClick={handleSubmit}
                   type="button"
@@ -132,7 +138,15 @@ const AddBlogs = () => {
                 >
                   Publish
                 </button>
+                <button
+                  onClick={handleCancel}
+                  type="button"
+                  className="text-white bg-red-600  hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-8 py-3 text-center "
+                >
+                  Cancel
+                </button>
               </div>
+
             </div>
           </div>
 

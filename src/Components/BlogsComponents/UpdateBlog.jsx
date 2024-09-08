@@ -1,19 +1,61 @@
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import Heading from '../CommonComponents/Heading'
 
 const UpdateBlog = () => {
+    let navigate = useNavigate()
     const { blogId } = useParams()
-    const [updateBlog,setUpdateBlog] = useState({})
+    const [updateBlog, setUpdateBlog] = useState({})
 
 
-    const handleChange = (e) =>{
-        setUpdateBlog({...updateBlog, [e.target.name] : e.targe.value})
+    const handleChange = (e) => {
+        setUpdateBlog({ ...updateBlog, [e.target.name]: e.target.value })
     }
 
-    const handleSubmit = (e) =>{
-        e.preventdefault()
-        
+
+    const checkValidation = (value, field) => {
+        if (!value || value.trim() === '') {
+            toast.error(`${field} is required`)
+            return false
+        }
+        return true
     }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let resp1 = checkValidation(updateBlog.heading, "Blog Heading")
+        let resp2 = checkValidation(updateBlog.content, "Blog Content")
+        let dateTime = new Date();
+        dateTime = dateTime.toDateString()
+        if (resp1 && resp2 == true) {
+            let data = { content: updateBlog.content, heading: updateBlog.heading, time: dateTime, img: updateBlog.img }
+            let update_blogs = JSON.parse(localStorage.getItem('Blogs'))
+            let new_data = []
+            for (let i = 0; i < update_blogs.length; i++) {
+                if (i != blogId) {
+                    new_data.push(update_blogs[i])
+                }
+                else {
+                    new_data.push(data)
+                }
+            }
+            localStorage.setItem('Blogs', JSON.stringify([...new_data]))
+            toast.success('Blog Updated sucessfully')
+            navigate('/home/blogdetails')
+
+        }
+
+    }
+
+    useEffect(()=>{
+        let data = JSON.parse(localStorage.getItem('Blogs')) || []
+        data.map((ele,index)=>{
+            if(blogId == index){
+                setUpdateBlog({...ele})
+                return ele
+            }
+        })
+    },[])
     return (
         <>
             <div >

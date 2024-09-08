@@ -64,7 +64,7 @@ const Home = () => {
               <p className="px-6 pt-2 flex-grow text-base text-gray-600 text-left tracking-wide  ">{element.content?.substring(0, 100)}....
               </p>
 
-              <div className='p-6 flex mt-auto gap-4'>
+              <div className='p-6 flex mt-auto gap-4 flex-wrapq '>
                 <div className='flex-1'>
                   <button type="button" className=" text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm py-2 px-2  text-center w-24 " onClick={() => handleDelete(index)}>Delete</button>
                 </div>

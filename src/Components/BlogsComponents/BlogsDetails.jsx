@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Heading from '../CommonComponents/Heading'
+import Button from '../CommonComponents/Button'
+import { Link } from 'react-router-dom'
 const BlogsDetails = () => {
     const {blogId} = useParams()
     const [blogdetails,setBlogDetails] = useState({})
@@ -28,11 +30,11 @@ const BlogsDetails = () => {
           <img className='mt-5 mb-4  w-full h-96' src={blogdetails.img} />
           <div className='my-5 '> 
             <pre className='w-full text-gray-700 text-justify tracking-wide text-lg text-wrap'>{blogdetails.content}</pre></div>
-          {/* <div className='flex-2 flex justify-end'>
+          <div className='flex-2 flex justify-end'>
             <Link to={`/blog/updated/${blogId}`}>
               <Button ButtonText="Update Blogs" />
             </Link>
-          </div> */}
+          </div>
         </div>
 
       </div>
